@@ -15,7 +15,7 @@
  Запускаем скрипт
   ``python script.py POST_LINK ACCOUNT_NAME``
   
- POST_LINK - ссылка на пост с конкурсом (обязательный параметр, для примера можно использовать https://www.instagram.com/p/B3lqfWLIO6w/), 
+ POST_LINK - ссылка на пост с конкурсом (обязательный параметр, для примера можно использовать [пост](https://www.instagram.com/p/B3lqfWLIO6w/)), 
  ACCOUNT_NAME - аккаунт, в котором проводится конкурс (необязательный параметр, по умолчанию [kvartal_vocal](https://www.instagram.com/kvartal_vocal/))
  
 ## Цель проекта
