@@ -1,18 +1,28 @@
 from instabot import Bot
 import re
 import argparse
+import os
+from pathlib import Path
+from dotenv import load_dotenv
 from pprint import pprint
 
-def createParser():
+env_path = Path('.') / '.env'
+load_dotenv(dotenv_path=env_path)
+
+YOUR_LOGIN = os.getenv("LOGIN")
+YOUR_PASSWORD = os.getenv("PASSWORD")
+
+
+def create_parser():
     parser = argparse.ArgumentParser(description='Find users with right rules')
     parser.add_argument('post_link', help='The link of the post', default='https://www.instagram.com/p/B3lqfWLIO6w/')
     parser.add_argument('-l', '--post_author', help='Your account', default='kvartal_vocal')
 
     return parser
 
-
+# https://blog.jstassen.com/2016/03/code-regex-for-instagram-username-and-hashtags/
 def get_user_name(input_string):
-    return re.findall("(?:@)([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)", input_string)
+    return re.findall(r"(?:@)([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)", input_string)
 
 
 def is_user_exist(username):
@@ -20,14 +30,13 @@ def is_user_exist(username):
 
 
 if __name__ == '__main__':
-    parser = createParser()
+    parser = create_parser()
     args = parser.parse_args()
     post_link = args.post_link
     post_author = args.post_author
-    print(post_author)
 
     bot = Bot()
-    bot.login(username="YOUR_LOGIN", password="YOUR_PASSWORD")
+    bot.login(username=YOUR_LOGIN, password=YOUR_PASSWORD)
 
     media_id = bot.get_media_id_from_link(post_link)
     comments = bot.get_media_comments_all(media_id)
@@ -40,9 +49,10 @@ if __name__ == '__main__':
 
         if str(user_id) in likers and str(user_id) in followers:
             user_friends = get_user_name(comment['text'])
-            for friend in user_friends:
-                if is_user_exist(friend):
-                    users.append(comment['user']['username'])
+
+            if [friend for friend in user_friends if is_user_exist(friend)]:
+                users.append(comment['user']['username'])
+
 
     uniq_users = list(set(users))
     pprint(uniq_users)

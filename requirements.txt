@@ -1,3 +1,5 @@
+dotenv==0.10.3
 instabot==0.117.0
+getenv==0.2.0
 
 
