@@ -12,10 +12,13 @@
  Для работы скрипта необходимы ваши данные от аккаунта Instagram. Чтобы их указать в папке со скриптом необходимо создать файл с именем `.env`. Открыв его с помощью любого текстового редактора, необходимо указать логин и пароль в следующем формате (без кавычек):
  
  ```
- LOGIN = your_login
- PASSWORD = your_password
+ INST_LOGIN = your_login
+ INST_PASSWORD = your_password
 ```
- Запускаем скрипт командой ```python script.py POST_LINK ACCOUNT_NAME```
+ Запускаем скрипт командой 
+ ```
+ python script.py POST_LINK ACCOUNT_NAME
+ ```
   
  `POST_LINK` - ссылка на пост с конкурсом (обязательный параметр), 
  `ACCOUNT_NAME` - аккаунт, в котором проводится конкурс (необязательный параметр, по умолчанию [kvartal_vocal](https://www.instagram.com/kvartal_vocal/))

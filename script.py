@@ -9,8 +9,8 @@ from pprint import pprint
 env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
 
-YOUR_LOGIN = os.getenv("LOGIN")
-YOUR_PASSWORD = os.getenv("PASSWORD")
+INST_LOGIN = os.getenv("INST_LOGIN")
+INST_PASSWORD = os.getenv("INST_PASSWORD")
 
 
 def create_parser():
@@ -20,8 +20,9 @@ def create_parser():
 
     return parser
 
-# https://blog.jstassen.com/2016/03/code-regex-for-instagram-username-and-hashtags/
-def get_user_name(input_string):
+
+def get_user_names(input_string):
+    # https://blog.jstassen.com/2016/03/code-regex-for-instagram-username-and-hashtags/
     return re.findall(r"(?:@)([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)", input_string)
 
 
@@ -36,7 +37,7 @@ if __name__ == '__main__':
     post_author = args.post_author
 
     bot = Bot()
-    bot.login(username=YOUR_LOGIN, password=YOUR_PASSWORD)
+    bot.login(username=INST_LOGIN, password=INST_PASSWORD)
 
     media_id = bot.get_media_id_from_link(post_link)
     comments = bot.get_media_comments_all(media_id)
@@ -48,9 +49,10 @@ if __name__ == '__main__':
         user_id = comment['user_id']
 
         if str(user_id) in likers and str(user_id) in followers:
-            user_friends = get_user_name(comment['text'])
+            user_friends = get_user_names(comment['text'])
 
-            if [friend for friend in user_friends if is_user_exist(friend)]:
+            exists = any(is_user_exist(friend) for friend in user_friends)
+            if exists:
                 users.append(comment['user']['username'])
 
 
